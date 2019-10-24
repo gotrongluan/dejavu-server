@@ -6,16 +6,16 @@ const fs = require('fs');
 const express = require('express');
 const loaders = require('./loaders');
 const debug = require('debug')('dejavu-server:server');
-import { normalizePort } from 'utils/utils';
+const { normalizePort } = require('./utils/utils');
 
 const createHttpsServer = app => {
 	const port = normalizePort(config.get('securePort') || '3443');
 	app.set('securePort', port);
 	const options = {
-		key: fs.readFileSync(path.join(__dirname, 'ssl/private.key')),
-		cert: fs.readFileSync(path.join(__dirname, 'ssl/cert.csr'))
+		key: fs.readFileSync(`${__dirname}/ssl/private.key`),
+        cert: fs.readFileSync(`${__dirname}/ssl/certificate.pem`)
 	};
-	const server = https.createServer(app, options);
+	const server = https.createServer(options, app);
 	server.listen(port);
 	server.on('error', onError);
 	server.on('listening', onListening);

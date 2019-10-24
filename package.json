@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start:dev": "DEBUG=dejavu-server:* NODE_ENV=dev nodemon ./app.js",
+    "start:prod": "NODE_ENV=prod nodemon ./app.js"
   },
   "dependencies": {
     "config": "^3.2.3",
@@ -12,12 +13,14 @@
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
+    "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.3.3",
     "mongoose": "^5.7.6",
     "morgan": "~1.9.1",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "passport-local-mongoose": "^5.0.1"
   },
   "devDependencies": {
     "nodemon": "^1.19.4"
