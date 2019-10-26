@@ -6,6 +6,7 @@ const { redToHttps } = require('../middleware');
 const indexRouter = require('../routes/index');
 const usersRouter = require('../routes/users');
 const followsRouter = require('../routes/follows');
+const policyRouter = require('../routes/policy');
 
 module.exports = async app => {
     app.use(redToHttps);
@@ -14,6 +15,7 @@ module.exports = async app => {
     app.use('/', indexRouter);
     app.use('/users', usersRouter);
     app.use('/follows', followsRouter);
+    app.use('/policy', policyRouter);
 
     // catch 404 and forward to error handler
     app.use(function(req, res, next) {
