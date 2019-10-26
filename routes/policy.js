@@ -5,7 +5,7 @@ const { verifyUser } = require('../middleware/auth');
 const policyServices = require('../services/policy');
 
 router.options('/all', cors.preflight(['GET']));
-router.get('/all', cors.simplest, verifyUser, (req, res, next) => {
+router.get('/all', cors.simplest, verifyUser, async (req, res, next) => {
     const { error, value } = await policyServices.all();
     if (error) next(error);
     else res.return(value);

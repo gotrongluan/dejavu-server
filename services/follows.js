@@ -4,11 +4,12 @@ const _ = require('lodash');
 module.exports = {
     getFollowers: async (userId, page, limit) => {
         try {
-            let followers = await Follow.find({ followed: userId })
-                                .populate('follower', 'name status avatar')
-                                .skip((page - 1) * limit)
-                                .limit(limit)
-                                .select(['follower']);
+            let followers
+                = await Follow.find({ followed: userId })
+                    .populate('follower', 'name status avatar')
+                    .skip((page - 1) * limit)
+                    .limit(limit)
+                    .select(['follower']);
             followers = _.map(followers, f => f.follower);
             return { error: null, value: followers };
         }
@@ -18,11 +19,12 @@ module.exports = {
     },
     getFollowings: async (userId, page, limit) => {
         try {
-            let followings = await Follow.find({ follower: userId })
-                                .populate('followed', 'name status avatar')
-                                .skip((page - 1) * limit)
-                                .limit(limit)
-                                .select(['followed']);
+            let followings
+                = await Follow.find({ follower: userId })
+                    .populate('followed', 'name status avatar')
+                    .skip((page - 1) * limit)
+                    .limit(limit)
+                    .select(['followed']);
             followings = _.map(followings, f => {
                 if (!f.followed)
                     console.log(f);

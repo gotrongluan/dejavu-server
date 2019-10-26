@@ -3,7 +3,7 @@ const Policy = require('../models/policy');
 module.exports = {
     all: async () => {
         try {
-            const policy = Policy.find().sort(['coin']);
+            const policy = await Policy.find().sort({ coin: 1 });
             return { error: null, value: policy };
         }
         catch (err) {
