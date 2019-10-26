@@ -7,6 +7,7 @@ const debug = require('debug')('dejavu-server:users');
 const cors = require('../middleware/cors');
 const User = require('../models/users');
 const { getToken } = require('../utils/auth');
+const { verifyUser } = require('../middleware/auth');
 
 router.options('/signup', cors.preflight(['POST']));
 router.post('/signup', cors.sideEffect, userValidators.signup, (req, res, next) => {
@@ -38,7 +39,17 @@ router.post('/login', cors.sideEffect, userValidators.login, passport.authentica
 			notification: 0,
 		}
 	});
-})
+});
 
+router.options('/me', cors.preflight(['GET']))
+router.get('/me', cors.simplest, verifyUser, (req, res, next) => {
+	const user = _.pick(req.user, ['_id', 'name', 'phone', 'avatar', 'coin', 'pun', 'online', 'birthday', 'address', 'gender']);
+	res.return({
+		user,
+		unreads: {
+			message: 0, notification: 0
+		}
+	});
+});
 
 module.exports = router;
