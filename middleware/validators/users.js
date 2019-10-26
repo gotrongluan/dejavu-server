@@ -12,7 +12,7 @@ module.exports = {
             gender: Joi.string().required(),
             birthday: Joi.string().pattern(/^\d\d\/\d\d\/\d\d\d\d$/).required(),
             address: Joi.string(),
-            avatar: Joi.string(),
+            avatar: Joi.string()
         });
         const { error } = schema.validate(req.body);
         if (error) {

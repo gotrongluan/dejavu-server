@@ -15,9 +15,9 @@ module.exports = {
         req.query.limit = limit;
         next();
     },
-    buyCoin: (req, res, next) => {
+    buyCoins: (req, res, next) => {
         const schema = Joi.object({
-            money: Joi.Number().required()
+            money: Joi.number().integer().required()
         });
         const { error } = schema.validate(req.body);
         if (error) {
