@@ -20,5 +20,17 @@ module.exports = {
             next(createError(400));
         }
         else next();
+    },
+    login: (req, res, next) => {
+        const schema = Joi.object({
+            phone: Joi.string().pattern(/^\d{10}$/).required(),
+            password: Joi.string().required()
+        });
+        const { error } = schema.validate(req.body);
+        if (error) {
+            debug(error.details[0].message);
+            next(createError(400));
+        }
+        else next();
     }
 }

@@ -11,9 +11,9 @@ module.exports = async app => {
     passport.use(new JwtStrategy({
         jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
         secretOrKey: config.get('secretKey')
-    }, (jwtoken, done) => {
+    }, async (jwtoken, done) => {
         try {
-            const user = User.findById(jwtoken._id);
+            const user = await User.findById(jwtoken._id);
             if (!user) return done(null, false);
             done(null, user);
         }

@@ -13,7 +13,7 @@ module.exports = async ({ expressApp }) => {
     //express
     app = await expressLoader(app);
     //passport
-    //app = await passportLoader(app);
+    app = await passportLoader(app);
     //routes
     app = await routesLoader(app);
 

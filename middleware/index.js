@@ -6,11 +6,11 @@ exports.redToHttps = (req, res, next) => {
 };
 
 exports.resWrapper = (req, res, next) => {
-    res.success = (payload, statusCode = 200) => {
+    res.return = (payload, statusCode = 200) => {
         res.statusCode = statusCode;
         res.setHeader('Content-Type', 'application/json');
         res.json({
-            error: statusCode < 400,
+            error: statusCode >= 400,
             data: payload
         });
     };
