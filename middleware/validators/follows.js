@@ -4,42 +4,46 @@ const createError = require('http-errors');
 const debug = require('debug')('dejavu-server:follows');
 
 module.exports = {
-    followers: (req, res, next) => {
-        const { id: userId } = req.params;
-        const schema = Joi.objectId();
-        const { error } = schema.validate(userId);
-        if (error) {
-            debug(error.details[0].message);
-            return next(createError(400));
-        }
+    followers: (req, res, next) => {        
         let {
             page = '1',
-            limit = '25'
+            limit = '12',
+            userId
         } = req.query;
         page = Number.parseInt(page);
         limit = Number.parseInt(limit);
         if (isNaN(page) || isNaN(limit)) return next(createError(400));
         req.query.page = page;
         req.query.limit = limit;
+        if (userId) {
+            const schema = Joi.objectId();
+            const { error } = schema.validate(userId);
+            if (error) {
+                debug(error.details[0].message);
+                return next(createError(400));
+            }
+        }
         next();
     },
     followings: (req, res, next) => {
-        const { id: userId } = req.params;
-        const schema = Joi.objectId();
-        const { error } = schema.validate(userId);
-        if (error) {
-            debug(error.details[0].message);
-            return next(createError(400));
-        }
         let {
             page = '1',
-            limit = '25'
+            limit = '12',
+            userId,
         } = req.query;
         page = Number.parseInt(page);
         limit = Number.parseInt(limit);
         if (isNaN(page) || isNaN(limit)) return next(createError(400));
         req.query.page = page;
         req.query.limit = limit;
+        if (userId) {
+            const schema = Joi.objectId();
+            const { error } = schema.validate(userId);
+            if (error) {
+                debug(error.details[0].message);
+                return next(createError(400));
+            }
+        }
         next();
     },
     follow: (req, res, next) => {
@@ -64,22 +68,28 @@ module.exports = {
         else next();
     },
     numOfFollower: (req, res, next) => {
-        const { id: userId } = req.params;
-        const schema = Joi.objectId();
-        const { error } = schema.validate(userId);
-        if (error) {
-            debug(error.details[0].message);
-            next(createError(400));
+        const { userId } = req.query;
+        if (userId) {
+            const schema = Joi.objectId();
+            const { error } = schema.validate(userId);
+            if (error) {
+                debug(error.details[0].message);
+                next(createError(400));
+            }
+            else next();
         }
         else next();
     },
     numOfFollowing: (req, res, next) => {
-        const { id: userId } = req.params;
-        const schema = Joi.objectId();
-        const { error } = schema.validate(userId);
-        if (error) {
-            debug(error.details[0].message);
-            next(createError(400));
+        const { userId } = req.query;
+        if (userId) {
+            const schema = Joi.objectId();
+            const { error } = schema.validate(userId);
+            if (error) {
+                debug(error.details[0].message);
+                next(createError(400));
+            }
+            else next();
         }
         else next();
     }

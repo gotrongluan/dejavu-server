@@ -5,21 +5,19 @@ const followValidators = require('../middleware/validators/follows');
 const { verifyUser } = require('../middleware/auth');
 const followServices = require('../services/follows');
 
-router.route('/:id/followers')
+router.route('/followers')
     .options(cors.preflight(['GET']))
     .get(cors.simplest, verifyUser, followValidators.followers, async (req, res, next) => {
-        const { id: userId } = req.params;
-        const { page, limit } = req.query;
+        const { userId = req.user._id, page, limit } = req.query;
         const { error, value } = await followServices.getFollowers(userId, page, limit);
         if (error) next(error);
         else res.return(value);
     });
 
-router.route('/:id/followings')
+router.route('/followings')
     .options(cors.preflight(['GET']))
     .get(cors.simplest, verifyUser, followValidators.followings, async (req, res, next) => {
-        const { id: userId } = req.params;
-        const { page, limit } = req.query;
+        const { userId = req.user._id, page, limit } = req.query;
         const { error, value } = await followServices.getFollowings(userId, page, limit);
         if (error) next(error);
         else res.return(value);
@@ -45,19 +43,19 @@ router.route('/:id/unfollow')
         else res.return(value);
     });
 
-router.route('/:id/num-followers')
+router.route('/num-followers')
     .options(cors.preflight(['GET']))
     .get(cors.simplest, verifyUser,followValidators.numOfFollower,  async (req, res, next) => {
-        const userId = req.user._id;
+        const { userId = req.user._id } = req.query;
         const { error, value } = await followServices.getNumOfFollower(userId);
         if (error) next(error);
         else res.return(value);
     });
 
-router.route('/:id/num-followings')
+router.route('/num-followings')
     .options(cors.preflight(['GET']))
     .get(cors.simplest, verifyUser, followValidators.numOfFollowing, async (req, res, next) => {
-        const userId = req.user._id;
+        const { userId = req.user._id } = req.query;
         const { error, value } = await followServices.getNumOfFollowing(userId);
         if (error) next(error);
         else res.return(value);
