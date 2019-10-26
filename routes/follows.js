@@ -45,18 +45,18 @@ router.route('/:id/unfollow')
         else res.return(value);
     });
 
-router.route('/num-followers')
+router.route('/:id/num-followers')
     .options(cors.preflight(['GET']))
-    .get(cors.simplest, verifyUser, async (req, res, next) => {
+    .get(cors.simplest, verifyUser,followValidators.numOfFollower,  async (req, res, next) => {
         const userId = req.user._id;
         const { error, value } = await followServices.getNumOfFollower(userId);
         if (error) next(error);
         else res.return(value);
     });
 
-router.route('/num-followings')
+router.route('/:id/num-followings')
     .options(cors.preflight(['GET']))
-    .get(cors.simplest, verifyUser, async (req, res, next) => {
+    .get(cors.simplest, verifyUser, followValidators.numOfFollowing, async (req, res, next) => {
         const userId = req.user._id;
         const { error, value } = await followServices.getNumOfFollowing(userId);
         if (error) next(error);

@@ -62,5 +62,25 @@ module.exports = {
             next(createError(400));
         }
         else next();
+    },
+    numOfFollower: (req, res, next) => {
+        const { id: userId } = req.params;
+        const schema = Joi.objectId();
+        const { error } = schema.validate(userId);
+        if (error) {
+            debug(error.details[0].message);
+            next(createError(400));
+        }
+        else next();
+    },
+    numOfFollowing: (req, res, next) => {
+        const { id: userId } = req.params;
+        const schema = Joi.objectId();
+        const { error } = schema.validate(userId);
+        if (error) {
+            debug(error.details[0].message);
+            next(createError(400));
+        }
+        else next();
     }
 }
