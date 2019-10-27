@@ -6,6 +6,7 @@ const userValidators = require('../middleware/validators/users');
 const debug = require('debug')('dejavu-server:users');
 const cors = require('../middleware/cors');
 const User = require('../models/users');
+const userServices = require('../services/users');
 const { getToken } = require('../utils/auth');
 const { verifyUser } = require('../middleware/auth');
 
@@ -52,4 +53,13 @@ router.get('/me', cors.simplest, verifyUser, (req, res, next) => {
 	});
 });
 
+router.route('/:id')
+	.options(cors.preflight(['GET']))
+	.get(cors.simplest, verifyUser, userValidators.getStreamer, async (req, res, next) => {
+		const { id: streamerId } = req.params;
+		const userId = req.user._id;
+		const { error, value } = await userServices.getStreamer(streamerId, userId);
+		if (error) next(error);
+		else res.return(value);
+	})
 module.exports = router;

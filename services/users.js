@@ -1,0 +1,20 @@
+const User = require('../models/users');
+const Follow = require('../models/follows');
+
+module.exports = {
+    getStreamer: async (streamerId, userId) => {
+        try {
+            const streamer
+                = await User.findById(streamerId)
+                    .select(['name', 'gender', 'phone', 'birthday', 'avatar', 'address']);
+            const pairs
+                = await Follow.findOne({ followed: streamerId, follower: userId });
+            let followed = false;
+            if (pairs) followed = true;
+            return { error: null, value: { streamer, followed } };
+        }
+        catch(err) {
+            return { error: err, value: null };
+        }
+    }
+}

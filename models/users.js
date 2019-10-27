@@ -18,9 +18,11 @@ const notificationSchema = new Schema({
     type: {
         type: Number,
         default: 1
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now()
     }
-}, {
-    timestamps: true
 });
 
 const userSchema = new Schema({

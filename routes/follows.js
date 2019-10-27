@@ -28,7 +28,9 @@ router.route('/follow')
     .post(cors.sideEffect, verifyUser, followValidators.follow, async (req, res, next) => {
         const { followedId } = req.body;
         const userId = req.user._id;
-        const { error, value } = await followServices.follow(followedId, userId);
+        const userName = req.user.name;
+        const userAvatar = req.user.avatar;
+        const { error, value } = await followServices.follow(followedId, userId, userName, userAvatar);
         if (error) next(error);
         else res.return(value);
     });
@@ -38,7 +40,9 @@ router.route('/:id/unfollow')
     .delete(cors.sideEffect, verifyUser, followValidators.unfollow, async (req, res, next) => {
         const { id: followedId } = req.params;
         const userId = req.user._id;
-        const { error, value } = await followServices.unfollow(followedId, userId);
+        const userName = req.user.name;
+        const userAvatar = req.user.avatar;
+        const { error, value } = await followServices.unfollow(followedId, userId, userName, userAvatar);
         if (error) next(error);
         else res.return(value);
     });

@@ -1,4 +1,5 @@
 const Follow = require('../models/follows');
+const User = require('../models/users');
 const _ = require('lodash');
 
 module.exports = {
@@ -25,18 +26,14 @@ module.exports = {
                     .skip((page - 1) * limit)
                     .limit(limit)
                     .select(['followed']);
-            followings = _.map(followings, f => {
-                if (!f.followed)
-                    console.log(f);
-                return f.followed;
-            });
+            followings = _.map(followings, f => f.followed);
             return { error: null, value: followings };
         }
         catch (err) {
             return { error: err, value: null };
         }
     },
-    follow: async (followedId, userId) => {
+    follow: async (followedId, userId, userName, userAvatar) => {
         try {
             let pairs = await Follow.findOne({ follower: userId, followed: followedId });
             if (pairs) return { error: new Error('Already followed!'), value: null };
@@ -44,17 +41,62 @@ module.exports = {
                 follower: userId,
                 followed: followedId
             });
-            pairs = await pairs.save();
-            return { error: null, value: pairs };
+            await pairs.save();
+            //save notification, type = 1
+            const notification = {
+                content: `${userName} has followed you. Have a fun relationship!`,
+                seen: false,
+                avatar: userAvatar,
+                createdAt: Date.now(),
+                type: 1
+            };
+            const followed =
+                await User.findByIdAndUpdate(
+                    followedId,
+                    {
+                        $push: {
+                            notifications: notification
+                        }
+                    },
+                    {
+                        $new: true
+                    }
+                ).lean();
+            const numOfUnread = _.filter(followed.notifications, notify => !notify.seen).length;
+            //to firebase with numOfUnread
+
+            return { error: null, value: 'Successfully!' };
         }
         catch (err) {
             return { error: err, value: null };
         }
     },
-    unfollow: async (followedId, userId) => {
+    unfollow: async (followedId, userId, userName, userAvatar) => {
         try {
-            const pairs = await Follow.findOneAndDelete({ follower: userId, followed: followedId });
-            return { error: null, value: pairs };
+            const result = await Follow.deleteOne({ follower: userId, followed: followedId });
+            if (result.deletedCount === 0)
+                return { error: new Error('Not followed yet!'), value: null };
+            const notification = {
+                content: `${userName} has unfollowed you. Don't cry, Dejavu here!`,
+                seen: false,
+                avatar: userAvatar,
+                createdAt: Date.now(),
+                type: 2
+            };
+            const followed =
+                await User.findByIdAndUpdate(
+                    followedId,
+                    {
+                        $push: {
+                            notifications: notification
+                        }
+                    },
+                    {
+                        $new: true
+                    }
+                ).lean();
+            const numOfUnread = _.filter(followed.notifications, notify => !notify.seen).length;
+            return { error: null, value: 'Successfully!' };
         }
         catch (err) {
             return { error: err, value: null };
