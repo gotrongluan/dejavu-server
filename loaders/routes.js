@@ -8,6 +8,7 @@ const usersRouter = require('../routes/users');
 const followsRouter = require('../routes/follows');
 const policyRouter = require('../routes/policy');
 const transactionsRouter = require('../routes/transactions');
+const notificationsRouter = require('../routes/notifications');
 
 module.exports = async app => {
     app.use(redToHttps);
@@ -18,6 +19,7 @@ module.exports = async app => {
     app.use('/follows', followsRouter);
     app.use('/policy', policyRouter);
     app.use('/transactions', transactionsRouter);
+    app.use('/notifications', notificationsRouter);
     
     // catch 404 and forward to error handler
     app.use(function(req, res, next) {

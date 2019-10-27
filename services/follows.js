@@ -55,11 +55,14 @@ module.exports = {
                     followedId,
                     {
                         $push: {
-                            notifications: notification
+                            notifications: {
+                                $each: [notification],
+                                $position: 0
+                            }
                         }
                     },
                     {
-                        $new: true
+                        new: true
                     }
                 ).lean();
             const numOfUnread = _.filter(followed.notifications, notify => !notify.seen).length;
@@ -88,11 +91,14 @@ module.exports = {
                     followedId,
                     {
                         $push: {
-                            notifications: notification
+                            notifications: {
+                                $each: [notification],
+                                $position: 0
+                            }
                         }
                     },
                     {
-                        $new: true
+                        new: true
                     }
                 ).lean();
             const numOfUnread = _.filter(followed.notifications, notify => !notify.seen).length;

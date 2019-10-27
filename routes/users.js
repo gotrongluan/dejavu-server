@@ -7,6 +7,7 @@ const debug = require('debug')('dejavu-server:users');
 const cors = require('../middleware/cors');
 const User = require('../models/users');
 const userServices = require('../services/users');
+const notificationServices = require('../services/notifications');
 const { getToken } = require('../utils/auth');
 const { verifyUser } = require('../middleware/auth');
 
@@ -25,10 +26,13 @@ router.post('/signup', cors.sideEffect, userValidators.signup, (req, res, next) 
 });
 
 router.options('/login', cors.preflight(['POST']));
-router.post('/login', cors.sideEffect, userValidators.login, passport.authenticate('local', { session: false }), (req, res, next) => {
+router.post('/login', cors.sideEffect, userValidators.login, passport.authenticate('local', { session: false }), async (req, res, next) => {
 	//login success, return token
 	const user = _.pick(req.user, ['_id', 'name', 'phone', 'avatar', 'coin', 'pun', 'online', 'birthday', 'address', 'gender']);
 	const token = getToken({ _id: req.user._id });
+	const unreadMessage = 0;
+	const { error, value: unreadNotification } = await notificationServices.getNumUnread(user._id);
+	if (error) return next(error);
 	//get Unread Message
 	res.return({
 		user: {
@@ -36,19 +40,23 @@ router.post('/login', cors.sideEffect, userValidators.login, passport.authentica
 			token
 		},
 		unreads: {
-			message: 0,
-			notification: 0,
+			message: unreadMessage,
+			notification: unreadNotification,
 		}
 	});
 });
 
 router.options('/me', cors.preflight(['GET']))
-router.get('/me', cors.simplest, verifyUser, (req, res, next) => {
+router.get('/me', cors.simplest, verifyUser, async (req, res, next) => {
 	const user = _.pick(req.user, ['_id', 'name', 'phone', 'avatar', 'coin', 'pun', 'online', 'birthday', 'address', 'gender']);
+	const unreadMessage = 0;
+	const { error, value: unreadNotification } = await notificationServices.getNumUnread(user._id);
+	if (error) return next(error);
 	res.return({
 		user,
 		unreads: {
-			message: 0, notification: 0
+			message: 0,
+			notification: unreadNotification
 		}
 	});
 });
