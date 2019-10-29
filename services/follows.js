@@ -1,6 +1,7 @@
 const Follow = require('../models/follows');
 const User = require('../models/users');
-const fcm = require('./fcm');
+const notificationServices = require('./notifications');
+const fcmServices = require('./fcm');
 const _ = require('lodash');
 
 module.exports = {
@@ -51,23 +52,9 @@ module.exports = {
                 createdAt: Date.now(),
                 type: 1
             };
-            const followed =
-                await User.findByIdAndUpdate(
-                    followedId,
-                    {
-                        $push: {
-                            notifications: {
-                                $each: [notification],
-                                $position: 0
-                            }
-                        }
-                    },
-                    {
-                        new: true
-                    }
-                ).lean();
+            const followed = await notificationServices.saveNotification(followedId, notification);     
             const numOfUnread = _.filter(followed.notifications, notify => !notify.seen).length;
-            await fcm.data(followedId, {
+            await fcmServices.data(followedId, {
                 numOfUnread: numOfUnread,
                 ...notification
             });
@@ -89,23 +76,9 @@ module.exports = {
                 createdAt: Date.now(),
                 type: 2
             };
-            const followed =
-                await User.findByIdAndUpdate(
-                    followedId,
-                    {
-                        $push: {
-                            notifications: {
-                                $each: [notification],
-                                $position: 0
-                            }
-                        }
-                    },
-                    {
-                        new: true
-                    }
-                ).lean();
+            const followed = await notificationServices.saveNotification(followedId, notification);
             const numOfUnread = _.filter(followed.notifications, notify => !notify.seen).length;
-            await fcm.data(followedId, {
+            await fcmServices.data(followedId, {
                 numOfUnread: numOfUnread,
                 ...notification
             });

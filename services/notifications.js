@@ -52,5 +52,21 @@ module.exports = {
         catch(err) {
             return { error: err }
         }
-    }
+    },
+    saveNotification: async (userId, notification) => {
+        return await User.findByIdAndUpdate(
+            userId,
+            {
+                $push: {
+                    notifications: {
+                        $each: [notification],
+                        $position: 0
+                    }
+                }
+            },
+            {
+                new: true
+            }
+        ).lean();
+    } 
 }
