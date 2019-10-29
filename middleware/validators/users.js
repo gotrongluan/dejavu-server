@@ -42,5 +42,16 @@ module.exports = {
             next(createError(400));
         }
         else next();
+    },
+    saveFCMToken: (req, res, next) => {
+        const schema = Joi.object({
+            fcmToken: Joi.string().required()
+        });
+        const { error } = schema.validate(req.body);
+        if (error) {
+            debug(error.details[0].message);
+            next(createError(400));
+        }
+        else next();
     }
 }

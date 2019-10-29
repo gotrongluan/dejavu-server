@@ -1,5 +1,6 @@
 const Follow = require('../models/follows');
 const User = require('../models/users');
+const fcm = require('./fcm');
 const _ = require('lodash');
 
 module.exports = {
@@ -66,8 +67,10 @@ module.exports = {
                     }
                 ).lean();
             const numOfUnread = _.filter(followed.notifications, notify => !notify.seen).length;
-            //to firebase with numOfUnread
-
+            await fcm.data(followedId, {
+                numOfUnread: numOfUnread,
+                ...notification
+            });
             return { error: null, value: 'Successfully!' };
         }
         catch (err) {
@@ -102,6 +105,10 @@ module.exports = {
                     }
                 ).lean();
             const numOfUnread = _.filter(followed.notifications, notify => !notify.seen).length;
+            await fcm.data(followedId, {
+                numOfUnread: numOfUnread,
+                ...notification
+            });
             return { error: null, value: 'Successfully!' };
         }
         catch (err) {

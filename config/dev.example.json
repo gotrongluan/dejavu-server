@@ -4,5 +4,6 @@
     "mongoUrl": "mongodb://localhost:27017/dejavu",
     "host": "localhost",
     "secretKey": "",
-    "whiteList": ["http://localhost:3000", "https://localhost:3443"]
+    "whiteList": ["http://localhost:3000", "https://localhost:3443"],
+    "firebase-project-id": ""
 }

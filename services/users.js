@@ -16,5 +16,18 @@ module.exports = {
         catch(err) {
             return { error: err, value: null };
         }
+    },
+    saveFCMToken: async (userId, fcmToken) => {
+        try {
+            await User.updateOne({ _id: userId }, {
+                $set: {
+                    fcmToken
+                }
+            });
+            return { error: null, value: 'Successfully!' };
+        }
+        catch(err) {
+            return { error: err, value: null };
+        }
     }
 }

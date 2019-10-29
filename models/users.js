@@ -61,6 +61,9 @@ const userSchema = new Schema({
         type: Number,
         default: 0
     },
+    fcmToken: {
+        type: String
+    },
     online: {
         type: Boolean,
         default: false

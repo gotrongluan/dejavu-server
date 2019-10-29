@@ -61,6 +61,15 @@ router.get('/me', cors.simplest, verifyUser, async (req, res, next) => {
 	});
 });
 
+router.options('/saveFCMToken', cors.preflight(['PUT']));
+router.put('/saveFCMToken', cors.sideEffect, verifyUser, userValidators.saveFCMToken, async (req, res, next) => {
+	const userId = req.user._id;
+	const { fcmToken } = req.body;
+	const { error, value } = await userServices.saveFCMToken(userId, fcmToken);
+	if (error) next(error);
+	else res.return(value);
+});
+
 router.route('/:id')
 	.options(cors.preflight(['GET']))
 	.get(cors.simplest, verifyUser, userValidators.getStreamer, async (req, res, next) => {
@@ -69,5 +78,5 @@ router.route('/:id')
 		const { error, value } = await userServices.getStreamer(streamerId, userId);
 		if (error) next(error);
 		else res.return(value);
-	})
+	});
 module.exports = router;
