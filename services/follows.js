@@ -9,7 +9,7 @@ module.exports = {
         try {
             let followers
                 = await Follow.find({ followed: userId })
-                    .populate('follower', 'name status avatar')
+                    .populate('follower', 'name online avatar')
                     .skip((page - 1) * limit)
                     .limit(limit)
                     .select(['follower']);
@@ -24,7 +24,7 @@ module.exports = {
         try {
             let followings
                 = await Follow.find({ follower: userId })
-                    .populate('followed', 'name status avatar')
+                    .populate('followed', 'name online avatar')
                     .skip((page - 1) * limit)
                     .limit(limit)
                     .select(['followed']);

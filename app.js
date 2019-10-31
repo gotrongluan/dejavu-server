@@ -1,6 +1,7 @@
 const http = require('http');
 const https = require('https');
 const path = require('path');
+const { initializeIO } = require('./socket-io');
 const config = require('config');
 const fs = require('fs');
 const express = require('express');
@@ -19,6 +20,7 @@ const createHttpsServer = app => {
 	server.listen(port);
 	server.on('error', onError);
 	server.on('listening', onListening);
+	return server;
 	function onError(error) {
 		if (error.syscall !== 'listen') {
 		  throw error;
@@ -59,6 +61,7 @@ const createHttpServer = app => {
 	server.listen(port);
 	server.on('error', onError);
 	server.on('listening', onListening);
+	return server;
 	function onError(error) {
 		if (error.syscall !== 'listen') {
 		  throw error;
@@ -97,7 +100,8 @@ const startServer = async () => {
 	try {
 		app = await loaders({ expressApp: app });
 		createHttpServer(app);
-		createHttpsServer(app);
+		const httpsServer = createHttpsServer(app);
+		initializeIO(httpsServer);
 	}
 	catch (err) {
 		debug('Internal server error\n', err);

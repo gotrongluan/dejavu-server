@@ -6,7 +6,7 @@ module.exports = {
         try {
             const streamer
                 = await User.findById(streamerId)
-                    .select(['name', 'gender', 'phone', 'birthday', 'avatar', 'address']);
+                    .select(['name', 'gender', 'phone', 'birthday', 'avatar', 'address', 'online']);
             const pairs
                 = await Follow.findOne({ followed: streamerId, follower: userId });
             let followed = false;

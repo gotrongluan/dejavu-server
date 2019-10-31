@@ -8,9 +8,9 @@ const templateLoader = require('./template');
 module.exports = async ({ expressApp }) => {
     let app = expressApp;
     //mongoose
-    app = await mongooseLoader(app);
+    await mongooseLoader();
     //firebase
-    app = await firebaseLoader(app);
+    await firebaseLoader();
     //template
     app = await templateLoader(app);
     //express
