@@ -6,7 +6,7 @@ module.exports = {
         try {
             let conversations
                 = await Conversation.find({
-                        user: userId
+                        users: userId
                     })
                     .populate('users', 'name avatar')
                     .populate('lastMessage', 'content seenAt userId')
@@ -15,9 +15,9 @@ module.exports = {
                     .limit(limit).lean();
             conversations = _.map(conversations, conver => {
                 const newConver = { ...conver };
-                newConver.seen = (conver.lastMessage && conver.lastMessage.seenAt !== null && conver.lastMessage.userId !== userId) ? true : false;
+                newConver.seen = conver.lastMessage && (conver.lastMessage.userId.equals(userId)|| conver.lastMessage.seenAt !== null);
                 newConver.lastMessage = conver.lastMessage.content;
-                const partner = _.find(newConver.users, u => u._id !== userId);
+                const partner = _.find(newConver.users, u => !u._id.equals(userId));
                 newConver.name = partner.name;
                 newConver.avatar = partner.avatar;
                 delete newConver.users;

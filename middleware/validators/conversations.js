@@ -1,5 +1,6 @@
 const Joi = require('@hapi/joi');
 Joi.objectId = require('joi-objectid')(Joi);
+const createError = require('http-errors');
 const debug = require('debug')('dejavu-server:conversations');
 
 module.exports = {

@@ -1,10 +1,11 @@
 const handlers = require('./eventHandlers');
 
 let io = null;
-let initilizeIO = server => {
-    const io = require('socket.io')(server);
+let initializeIO = server => {
+    const io = require('socket.io').listen(server);
+    io.origins(['http://localhost:3000']);
     io = handlers(io);
 }
 
-exports.initilizeIO = initilizeIO;
+exports.initializeIO = initializeIO;
 exports.io = io;

@@ -8,8 +8,8 @@ const messageServices = require('../services/messages');
 router.route('/')
     .options(cors.preflight(['GET', 'POST']))
     .post(cors.sideEffect, verifyUser, messageValidators.send, async (req, res, next) => {
-        const { converId, partnerId, text } = req.body;
-        const { error, value } = await messageServices.send(req.user, converId, partnerId, text);
+        const { conversationId, partnerId, text } = req.body;
+        const { error, value } = await messageServices.send(req.user, conversationId, partnerId, text);
         if (error) next(error);
         else res.return(value);
     });
