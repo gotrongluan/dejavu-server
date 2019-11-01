@@ -25,4 +25,14 @@ router.route('/check')
         else res.return(value);
     });
 
+router.route('/:converId/partner')
+    .options(cors.preflight(['GET']))
+    .get(cors.simplest, verifyUser, conversationValidators.getPartner, async (req, res, next) => {
+        const { converId } = req.params;
+        const userId = req.user._id;
+        const { error, value } = await conversationServices.getPartner(userId, converId);
+        if (error) next(error);
+        else res.return(value);
+    });
+
 module.exports = router;

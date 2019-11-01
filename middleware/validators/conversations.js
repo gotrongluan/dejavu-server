@@ -25,5 +25,15 @@ module.exports = {
             return next(createError(400));
         }
         next();
+    },
+    getPartner: (req, res, next) => {
+        const { converId } = req.params;
+        const schema = Joi.objectId().required();
+        const { error } = schema.validate(converId);
+        if (error) {
+            debug(error.details[0].message);
+            return next(createError(400));
+        }
+        next();
     }
 }

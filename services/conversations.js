@@ -42,5 +42,26 @@ module.exports = {
         catch (err) {
             return { error: err };
         }
-    } 
+    },
+    getPartner: async (userId, converId) => {
+        try {
+            let conversation
+                = await Conversation.findOne(
+                    {
+                        _id: converId,
+                        users: userId
+                    }
+                ).populate('users', 'name avatar online').lean();
+            if (!conversation)
+                return { error: new Error('Invalid conversation!') };
+            partner = _.find(conversation.users, u => !u._id.equals(userId));
+            return {
+                error: null,
+                value: partner
+            };
+        }
+        catch (err) {
+            return { error: err };
+        }
+    }
 }
