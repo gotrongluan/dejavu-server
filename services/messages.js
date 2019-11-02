@@ -67,7 +67,7 @@ module.exports = {
                         _id: conversation._id,
                         updatedAt: conversation.updatedAt,
                         lastMessage: message.content,
-                        userName: partner.name,
+                        name: partner.name,
                         avatar: partner.avatar
                     }
                 }

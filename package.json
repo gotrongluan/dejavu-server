@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start:dev": "DEBUG=dejavu-server:* NODE_ENV=dev nodemon GOOGLE_APPLICATION_CREDENTIALS=./bin/firebase-admin-pkey.json ./app.js",
-    "start:prod": "NODE_ENV=prod nodemon GOOGLE_APPLICATION_CREDENTIALS=./bin/firebase-admin-pkey.json ./app.js"
+    "start:prod": "NODE_ENV=prod nodemon GOOGLE_APPLICATION_CREDENTIALS=./bin/firebase-admin-pkey.json ./app.js",
+    "start:window": "set DEBUG=dejavu-server:* && set NODE_ENV=dev && set GOOGLE_APPLICATION_CREDENTIALS=./bin/firebase-admin-pkey.json && nodemon ./app.js"
   },
   "dependencies": {
     "@hapi/joi": "^16.1.7",
