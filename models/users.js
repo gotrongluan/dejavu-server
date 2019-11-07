@@ -51,7 +51,7 @@ const userSchema = new Schema({
     },
     avatar: {
         type: String,
-        default: 'https://farm66.static.flickr.com/65535/48168117221_319c6f7081_b.jpg'
+        default: `https://api.adorable.io/avatars/285/${Date.now()}.png`
     },
     coin: {
         type: Number,
@@ -67,6 +67,10 @@ const userSchema = new Schema({
     online: {
         type: Boolean,
         default: false
+    },
+    view: {
+        type: Number,
+        default: 0,
     },
     notifications: [ notificationSchema ]
 }, {

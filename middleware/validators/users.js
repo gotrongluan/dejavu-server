@@ -33,16 +33,6 @@ module.exports = {
         }
         else next();
     },
-    getStreamer: (req, res, next) => {
-        const { id: userId } = req.params;
-        const schema = Joi.objectId().required();
-        const { error } = schema.validate(userId);
-        if (error) {
-            debug(error.details[0].message);
-            next(createError(400));
-        }
-        else next();
-    },
     saveFCMToken: (req, res, next) => {
         const schema = Joi.object({
             fcmToken: Joi.string().required()

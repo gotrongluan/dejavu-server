@@ -10,6 +10,7 @@ const policyRouter = require('../routes/policy');
 const transactionsRouter = require('../routes/transactions');
 const notificationsRouter = require('../routes/notifications');
 const conversationRouter = require('../routes/conversations');
+const streamersRouter = require('../routes/streamers');
 const messagesRouter = require('../routes/messages');
 
 module.exports = async app => {
@@ -24,6 +25,7 @@ module.exports = async app => {
     app.use('/notifications', notificationsRouter);
     app.use('/conversations', conversationRouter);
     app.use('/messages', messagesRouter);
+    app.use('/streamers', streamersRouter);
     
     // catch 404 and forward to error handler
     app.use(function(req, res, next) {

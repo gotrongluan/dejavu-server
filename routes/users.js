@@ -70,13 +70,4 @@ router.put('/saveFCMToken', cors.sideEffect, verifyUser, userValidators.saveFCMT
 	else res.return(value);
 });
 
-router.route('/:id')
-	.options(cors.preflight(['GET']))
-	.get(cors.simplest, verifyUser, userValidators.getStreamer, async (req, res, next) => {
-		const { id: streamerId } = req.params;
-		const userId = req.user._id;
-		const { error, value } = await userServices.getStreamer(streamerId, userId);
-		if (error) next(error);
-		else res.return(value);
-	});
 module.exports = router;
