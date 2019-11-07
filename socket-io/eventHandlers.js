@@ -23,6 +23,26 @@ function handlers(io) {
         });
 
     });
+    io.of('/stream').on('connection', function (socket) {
+        console.log('New socket connected to stream namespace!');
+        socket.on('joinRoom', function (streamerId) {
+            socket.join(`stream-${streamerId}`);
+        });
+        socket.on('leaveRoom', function (streamerId, userId) {
+            if (streamerId === userId && streamerId) {
+                socket.to(`stream-${streamerId}`).emit('close');
+                io.of('/stream').in(`stream-${streamerId}`).clients((error, socketIds) => {
+                    if (error) throw error;
+                    socketIds.forEach(socketId => io.sockets.sockets[socketId].leave(`stream-${streamerId}`));
+                  
+                });
+            }
+            else socket.leave(`stream-${streamerId}`);
+        });
+        socket.on('message', function (streamerId, message) {
+            io.of('/stream').to(`stream-${streamerId}`).emit('message', message);
+        });
+    })
     return io;
 }
 

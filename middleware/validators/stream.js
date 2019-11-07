@@ -1,7 +1,7 @@
 const Joi = require('@hapi/joi');
 Joi.objectId = require('joi-objectid')(Joi);
 const createError = require('http-errors');
-const debug = require('debug')('dejavu-server:vt-validator');
+const debug = require('debug')('dejavu-server:stream-validator');
 
 module.exports = {
     saveWowza: (req, res, next) => {
