@@ -7,6 +7,7 @@ module.exports = {
             const streamer
                 = await User.findById(streamerId)
                     .select(['name', 'gender', 'phone', 'birthday', 'avatar', 'address', 'online']);
+            if (!streamer) return { error: new Error('Invalid streamer!') };
             const pairs
                 = await Follow.findOne({ followed: streamerId, follower: userId });
             let followed = false;

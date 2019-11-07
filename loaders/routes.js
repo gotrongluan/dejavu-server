@@ -12,6 +12,7 @@ const notificationsRouter = require('../routes/notifications');
 const conversationRouter = require('../routes/conversations');
 const streamersRouter = require('../routes/streamers');
 const messagesRouter = require('../routes/messages');
+const streamRouter = require('../routes/stream');
 
 module.exports = async app => {
     app.use(redToHttps);
@@ -26,6 +27,7 @@ module.exports = async app => {
     app.use('/conversations', conversationRouter);
     app.use('/messages', messagesRouter);
     app.use('/streamers', streamersRouter);
+    app.use('/stream', streamRouter);
     
     // catch 404 and forward to error handler
     app.use(function(req, res, next) {

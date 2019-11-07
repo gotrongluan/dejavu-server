@@ -25,6 +25,16 @@ const notificationSchema = new Schema({
     }
 });
 
+const wowzaSchema = new Schema({
+    primaryServer: String,
+    hostPort: Number,
+    application: String,
+    streamName: String,
+    username: String,
+    password: String,
+    streamId: String,
+});
+
 const userSchema = new Schema({
     phone: {
         type: String,
@@ -72,6 +82,7 @@ const userSchema = new Schema({
         type: Number,
         default: 0,
     },
+    wowza: wowzaSchema,
     notifications: [ notificationSchema ]
 }, {
     timestamps: true
