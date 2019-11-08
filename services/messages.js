@@ -83,7 +83,6 @@ module.exports = {
             let partnerId;
             await Conversation.findOne({ _id: converId, users: userId }).exec((err, conversation) => {
                 if (err || !conversation) return { error: new Error('Invalid conversation!') };
-                console.log(conversation);
                 partnerId = _.find(conversation.users, uId => !uId.equals(userId));
             });
             const seenAt = Date.now();
@@ -113,7 +112,6 @@ module.exports = {
                 }
             );
             if (ioServices.check(converId, partnerId)) {
-                console.log('abc');
                 ioServices.sendSeenStatus(converId, partnerId, messageIds);
             }
             return {

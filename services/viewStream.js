@@ -8,8 +8,11 @@ module.exports = {
             const streamer
                 = await User.findById({ _id: streamerId }).select(['avatar', 'name', 'online', 'pun', 'wowza', 'view']).lean();
             if (!streamer) return { error: new Error('Invalid streamer!') };
-            if (!streamer.wowza || _.isEmpty(streamer.wowza)) streamer.streamId = null;
-            else streamer.streamId = streamer.wowza.streamId;
+            if (!streamer.wowza || _.isEmpty(streamer.wowza)) streamer.wowzaConf = null;
+            else streamer.wowzaConf = {
+                streamId: streamer.wowza.streamId,
+                player_hls_playback_url: streamer.wowza.player_hls_playback_url
+            };
             if (streamer.wowza) delete streamer.wowza;
             const pairs
                 = await Follow.findOne({ followed: streamerId, follower: userId });

@@ -7,7 +7,6 @@ module.exports = {
     simplest: cors(),
     preflight: methods => cors((req, callback) => {
         const origin = req.header('Origin');
-        console.log(origin);
         if (!origin || whiteList.indexOf(origin) !== -1) {
             const options = {
                 origin: true,

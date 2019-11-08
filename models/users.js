@@ -30,8 +30,7 @@ const wowzaSchema = new Schema({
     hostPort: Number,
     application: String,
     streamName: String,
-    username: String,
-    password: String,
+    player_hls_playback_url: String,
     streamId: String,
 });
 

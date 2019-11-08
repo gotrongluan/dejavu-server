@@ -11,8 +11,7 @@ module.exports = {
                 hostPort: Joi.number().required(),
                 application: Joi.string().required(),
                 streamName: Joi.string().required(),
-                username: Joi.string().required(),
-                password: Joi.string().required(),
+                player_hls_playback_url: Joi.string().required(),
                 streamId: Joi.string().required()
             }).required()
         }).required();
