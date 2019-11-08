@@ -17,5 +17,17 @@ module.exports = {
             return next(createError(400));
         }
         next();
+    },
+    sendGift: (req, res, next) => {
+        const schema = Joi.object({
+            giftId: Joi.objectId().required(),
+            streamerId: Joi.objectId().required()
+        });
+        const { error } = schema.validate(req.body);
+        if (error) {
+            debug(error.details[0].message);
+            return next(createError(400));
+        }
+        next();
     }
 }

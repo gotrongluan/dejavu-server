@@ -20,4 +20,13 @@ router.route('/')
         else res.return(value);
     });
 
+router.route('/send')
+    .options(cors.preflight(['PUT']))
+    .put(cors.sideEffect, verifyUser, giftValidators.sendGift, async (req, res, next) => {
+        const { giftId, streamerId } = req.body;
+        const { error, value } = await giftServices.sendGift(req.user, giftId, streamerId);
+        if (error) next(error);
+        else res.return(value);
+    });
+
 module.exports = router;

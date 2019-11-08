@@ -8,4 +8,6 @@ let initializeIO = server => {
 }
 
 exports.initializeIO = initializeIO;
-exports.io = io;
+exports.getIO = () => {
+    return io;
+}

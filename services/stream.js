@@ -16,8 +16,7 @@ module.exports = {
         try {
             await User.updateOne({ _id: streamerId }, {
                 $set: {
-                    wowza: wowza,
-                    online: true
+                    wowza: wowza
                 }
             }, { runValidators: true });
             return { error: null, value: 'Successfully!' };

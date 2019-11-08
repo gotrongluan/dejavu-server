@@ -1,4 +1,6 @@
 const Gift = require('../models/gifts');
+const User = require('../models/users');
+const ioServices = require('./socket.io');
 
 module.exports = {
     getGifts: async () => {
@@ -19,6 +21,32 @@ module.exports = {
             return { error: null, value: newGift };
         }
         catch (err) {
+            return { error: err };
+        }
+    },
+    sendGift: async (user, giftId, streamerId) => {
+        try {
+            const gift = await Gift.findById(giftId);
+            if (!gift) return { error: new Error('Invalid gift!') };
+            const { pun, coin } = gift;
+            if (user.coin < coin) return { error: new Error('You don\'t have enough coin!') };
+            const streamer = await User.findById(streamerId);
+            if (!streamer) return { error: new Error('Invalid streamer!') };
+            streamer.pun += pun;
+            await streamer.save();
+            await User.updateOne({ _id: user._id }, {
+                $inc: {
+                    coin: -coin
+                }
+            });
+            await ioServices.sendGift(user.name, user.avatar, streamerId, gift.name, streamer.pun);
+            return { error: null, value: {
+                status: true,
+                coin: user.coin - coin
+            }}
+        }
+        catch (err) {
+            console.log(err);
             return { error: err };
         }
     }
