@@ -10,6 +10,10 @@ module.exports = {
             if (!streamer) return { error: new Error('Invalid streamer!') };
             if (!streamer.wowza || _.isEmpty(streamer.wowza)) streamer.wowzaConf = null;
             else streamer.wowzaConf = {
+                primaryServer: streamer.wowza.primaryServer,
+                application: streamer.wowza.application,
+                streamName: streamer.wowza.streamName,
+                hostPort: streamer.wowza.hostPort,
                 streamId: streamer.wowza.streamId,
                 player_hls_playback_url: streamer.wowza.player_hls_playback_url
             };
