@@ -17,7 +17,7 @@ module.exports = {
     sendGift: (name, avatar, streamerId, giftName, newPun) => {
         const room = `stream-${streamerId}`;
         const io = getIO();
-        io.of('/stream').in(room).emit('message', {
+        io.of('/stream').in(room).emit('messageGift', {
             comment: `Sent to streamer a ${giftName.toUpperCase()} gift. Happy!`,
             name,
             avatar
