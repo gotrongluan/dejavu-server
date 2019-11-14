@@ -14,13 +14,14 @@ module.exports = {
         const room = `chat-${converId}`;
         emit(room, userId, 'seen', messageIds);
     },
-    sendGift: (name, avatar, streamerId, giftName, newPun) => {
+    sendGift: (name, avatar, streamerId, giftName, newPun, imageGift) => {
         const room = `stream-${streamerId}`;
         const io = getIO();
         io.of('/stream').in(room).emit('messageGift', {
             comment: `Sent to streamer a ${giftName.toUpperCase()} gift. Happy!`,
             name,
-            avatar
+            avatar,
+            imageGift
         });
         io.of('/stream').in(room).emit('changePun', newPun);
     }

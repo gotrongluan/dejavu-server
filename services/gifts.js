@@ -39,7 +39,7 @@ module.exports = {
                     coin: -coin
                 }
             });
-            await ioServices.sendGift(user.name, user.avatar, streamerId, gift.name, streamer.pun);
+            await ioServices.sendGift(user.name, user.avatar, streamerId, gift.name, streamer.pun, gift.avatar);
             return { error: null, value: {
                 status: true,
                 coin: user.coin - coin
