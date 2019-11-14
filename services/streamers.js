@@ -28,7 +28,7 @@ module.exports = {
         try {
             const streamers
             = await User.find({ _id: { $ne: userId } })
-                    .sort({ [mapTypeToSort[type]]: -1 })
+                    .sort({ online: -1, [mapTypeToSort[type]]: -1 })
                     .skip((page - 1) * limit)
                     .limit(limit)
                     .select(['name', 'avatar', 'pun', 'view', 'online']);

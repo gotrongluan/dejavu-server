@@ -1,6 +1,6 @@
 {
-    "port": "3000",
-    "securePort": "3800",
+    "port": "4000",
+    "securePort": "4800",
     "mongoUrl": "mongodb://localhost:27017/dejavu",
     "host": "localhost",
     "secretKey": "",
